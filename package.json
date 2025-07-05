@@ -18,6 +18,9 @@
     "electron-builder": "^25.1.0"
   },
   "build": {
+    "asarUnpack": [
+    "backend"
+    ],
     "appId": "com.boliyan.app",
     "productName": "Boliyan",
     "directories": {
@@ -43,11 +46,16 @@
       {
         "from": "backend/utils",
         "to": "backend/utils"
+      },
+      {
+        "from": "backend/portable-python",
+        "to": "backend/portable-python"
       }
     ],
     "win": {
       "target": "nsis",
       "icon": "build-assets/icon.png"
-    }
+    },
+    "icon": "build-assets/icon.png"
   }
 }

@@ -7,12 +7,64 @@ const { spawn } = require('child_process');
 let pythonProcess = null;
 
 function createPythonProcess() {
-  const pythonExe = process.platform === 'win32'
-    ? path.join(__dirname, 'backend', 'venv', 'Scripts', 'python.exe')
-    : path.join(__dirname, 'backend', 'venv', 'bin', 'python');
+  let pythonExe;
+  
+  if (app.isPackaged) {
+    // In production, use portable Python environment
+    const portablePythonPath = path.join(process.resourcesPath, 'backend', 'portable-python', 'python.exe');
+    const fs = require('fs');
+    
+    if (fs.existsSync(portablePythonPath)) {
+      pythonExe = portablePythonPath;
+      console.log('Using portable Python environment');
+    } else {
+      // Fallback to system Python if portable not available
+      if (process.platform === 'win32') {
+        const possiblePaths = [
+          'python.exe',
+          'python3.exe',
+          path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Python', 'Python39', 'python.exe'),
+          path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Python', 'Python310', 'python.exe'),
+          path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Python', 'Python311', 'python.exe'),
+          path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Python', 'Python312', 'python.exe'),
+          path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Python', 'Python313', 'python.exe'),
+          'C:\\Python39\\python.exe',
+          'C:\\Python310\\python.exe',
+          'C:\\Python311\\python.exe',
+          'C:\\Python312\\python.exe',
+          'C:\\Python313\\python.exe'
+        ];
+        
+        for (const pyPath of possiblePaths) {
+          try {
+            if (fs.existsSync(pyPath)) {
+              pythonExe = pyPath;
+              console.log('Using system Python:', pyPath);
+              break;
+            }
+          } catch (error) {
+            continue;
+          }
+        }
+        
+        if (!pythonExe) {
+          console.error('No Python installation found. Please install Python 3.9+ and ensure it\'s in PATH');
+          return;
+        }
+      } else {
+        pythonExe = 'python3';
+      }
+    }
+  } else {
+    // In development, use virtual environment
+    pythonExe = process.platform === 'win32'
+      ? path.join(__dirname, 'backend', 'venv', 'Scripts', 'python.exe')
+      : path.join(__dirname, 'backend', 'venv', 'bin', 'python');
+  }
   
   const scriptPath = path.join(__dirname, 'backend', 'app.py');
 
+  console.log('Starting Python process with:', pythonExe);
   pythonProcess = spawn(pythonExe, [scriptPath]);
 
   pythonProcess.stdout.on('data', (data) => {
