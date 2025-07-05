@@ -48,27 +48,29 @@ const MessageBubble = ({
               : 'bg-white/60 text-gray-800 border-[#e4e4e7]'
           }`}
         >
-          <p className={`leading-relaxed break-words ${!isUser && useAnmolLipi ? 'anmol-lipi' : ''}`}>{message.content}</p>
+          <p className={`leading-relaxed break-words ${!isUser && useAnmolLipi ? 'anmol-lipi' : ''}`}>
+            {message.content}
+          </p>
           {/* Font toggle and copy button for bot messages */}
           {!isUser && !message.isError && (
             <div className="flex gap-2 mt-2">
               <button
-                className={`px-2 py-1 rounded text-xs border ${
+                className={`px-2 py-1 rounded text-xs border transition-colors ${
                   isDarkMode
                     ? useAnmolLipi 
-                      ? 'bg-gray-700 border-gray-600 text-white' 
-                      : 'bg-gray-800 border-gray-700 text-gray-300'
+                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-300' 
+                      : 'bg-gray-700 border-gray-600 text-gray-300'
                     : useAnmolLipi
-                    ? 'bg-gray-200 border-gray-300 text-gray-800'
+                    ? 'bg-blue-100 border-blue-300 text-blue-700'
                     : 'bg-gray-100 border-gray-200 text-gray-600'
                 }`}
                 onClick={() => setUseAnmolLipi((prev) => !prev)}
-                title="Toggle AnmolLipi Font"
+                title={useAnmolLipi ? 'Switch to Default Font' : 'Switch to AnmolLipi Font'}
               >
-                {useAnmolLipi ? 'Default Font' : 'AnmolLipi Font'}
+                {useAnmolLipi ? 'AnmolLipi' : 'Default'}
               </button>
               <button
-                className={`px-2 py-1 rounded text-xs border ${
+                className={`px-2 py-1 rounded text-xs border transition-colors ${
                   isDarkMode
                     ? 'bg-transparent border-gray-600 text-gray-300 hover:bg-gray-700'
                     : 'bg-transparent border-gray-300 text-gray-600 hover:bg-gray-50'
@@ -138,6 +140,7 @@ const MessageBubble = ({
               onClose={() => {
                 if (typeof window !== 'undefined' && window.onFeedbackFormClose) window.onFeedbackFormClose();
               }}
+              message={message}
             />
           )}
         </AnimatePresence>

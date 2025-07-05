@@ -14,7 +14,7 @@ import csv
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=['http://localhost:5173', 'http://localhost:3000', 'https://boliyan-production.up.railway.app'], methods=['GET', 'POST', 'OPTIONS'])
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

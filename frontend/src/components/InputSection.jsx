@@ -1,28 +1,46 @@
-import React from 'react';
+import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 
-const InputSection = ({ text, setText, onTransliterate, onKeyPress, isLoading, isDarkMode, textareaRef }) => {
+export default function InputSection({
+  text,
+  setText,
+  onTransliterate,
+  onKeyPress,
+  isLoading,
+  isDarkMode,
+  textareaRef,
+}) {
   return (
-    <div className={`p-4 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-      <div className="flex items-center">
-        <textarea
+    <div
+      className={`w-full px-4 py-3 rounded-2xl backdrop-blur-lg shadow-md transition-colors
+        ${isDarkMode ? "bg-black/30 border border-white/10" : "bg-black/5 border border-black/10"}
+      `}
+    >
+      <div className="flex items-end gap-3">
+        <input
           ref={textareaRef}
           value={text}
           onChange={(e) => setText(e.target.value)}
-          onKeyPress={onKeyPress}
-          placeholder="Type English text here..."
-          className={`w-full p-2 border rounded-l-md resize-none ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-black'}`}
-          disabled={isLoading}
+          onKeyDown={onKeyPress}
+          placeholder="Type something to transliterate..."
+          rows={3}
+          className={`w-full resize-none rounded-xl p-3 text-base outline-none transition-colors
+            ${isDarkMode ? "bg-black/20 text-white placeholder-white/50" : "bg-white text-black placeholder-black/50"}
+          `}
         />
+
         <button
           onClick={onTransliterate}
-          disabled={isLoading}
-          className="bg-purple-600 text-white p-2 rounded-r-md hover:bg-purple-700 disabled:bg-gray-500"
+          disabled={!text.trim() || isLoading}
+          className={`p-3 rounded-xl transition-all duration-200 flex items-center justify-center
+            ${isDarkMode
+              ? "bg-white text-black hover:bg-gray-200"
+              : "bg-black text-white hover:bg-gray-800"}
+            ${(!text.trim() || isLoading) && "opacity-50 cursor-not-allowed"}
+          `}
         >
-          {isLoading ? '...' : 'Send'}
+          <PaperAirplaneIcon className="w-5 h-5 -rotate-45" />
         </button>
       </div>
     </div>
   );
-};
-
-export default InputSection;
+}

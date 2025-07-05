@@ -84,18 +84,7 @@ const TransliterationApp = () => {
     setExpandedFeedback(expandedFeedback === messageId ? null : messageId);
   };
 
-  const submitCorrection = async (messageId) => {
-    try {
-      await axios.post('http://localhost:5000/contribute', {
-        key: feedbackForm.english,
-        value: feedbackForm.corrected
-      });
-      setExpandedFeedback(null);
-      setFeedbackForm({ english: '', corrected: '' });
-    } catch (error) {
-      console.error('Correction submission error:', error);
-    }
-  };
+  
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {

@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'anmol': ['AnmolLipiHeavy', 'Arial', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

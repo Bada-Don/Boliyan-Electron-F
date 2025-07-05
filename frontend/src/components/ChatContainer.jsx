@@ -9,7 +9,8 @@ const ChatContainer = (props) => {
   return (
     <div
       ref={chatContainerRef}
-      className={`flex-1 overflow-y-auto p-4 rounded-lg mb-4 ${isDarkMode ? 'bg-black bg-opacity-20' : 'bg-white bg-opacity-50'}`}
+      className={`flex-1 overflow-y-auto p-4 rounded-lg mb-4 min-h-[65vh] max-h-[65vh] ${isDarkMode ? 'bg-black bg-opacity-20' : 'bg-white bg-opacity-50'}`}
+      style={{ scrollBehavior: 'smooth' }}
     >
       {messages.length === 0 && !isLoading && <EmptyState />}
       {messages.map((msg) => (
