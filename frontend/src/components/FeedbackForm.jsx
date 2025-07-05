@@ -27,7 +27,7 @@ const FeedbackForm = ({
 
     try {
       const response = await axios.post('https://boliyan-production.up.railway.app/api/feedback', {
-        key: feedbackForm.key,
+        key: feedbackForm.key.toLowerCase(),
         value: feedbackForm.value
       });
 

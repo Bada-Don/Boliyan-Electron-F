@@ -50,7 +50,7 @@ const TransliterationApp = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/transliterate', {
-        text: text.trim(),
+        text: text.trim().toLowerCase(),
         language: selectedLanguage
       });
 

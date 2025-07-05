@@ -41,8 +41,28 @@ function createWindow() {
     // If packaged, load the built HTML file
     mainWindow.loadFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
   } else {
-    // In development, load the Vite dev server
-    mainWindow.loadURL('http://localhost:3000');
+    // In development, try to load the Vite dev server first
+    const devServerURL = 'http://localhost:5173'; // Vite default port
+    const fallbackPath = path.join(__dirname, 'frontend', 'dist', 'index.html');
+    
+    // Check if dist folder exists (frontend has been built)
+    const fs = require('fs');
+    const distExists = fs.existsSync(fallbackPath);
+    
+    if (distExists) {
+      // Try dev server first, fallback to built files
+      mainWindow.loadURL(devServerURL).catch(() => {
+        console.log('Dev server not running, loading built files...');
+        mainWindow.loadFile(fallbackPath);
+      });
+    } else {
+      // No built files, try dev server
+      mainWindow.loadURL(devServerURL).catch((error) => {
+        console.error('Failed to load dev server:', error);
+        mainWindow.loadURL('data:text/html,<h1>Please run "npm run dev" in the frontend directory first</h1>');
+      });
+    }
+    
     // Open the DevTools automatically in development
     mainWindow.webContents.openDevTools();
   }

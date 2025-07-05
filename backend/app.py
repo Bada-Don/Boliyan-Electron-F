@@ -85,4 +85,5 @@ def contribute():
 
     return jsonify({"status": "success", "message": "Thank you for contributing!"})
 
-app.run()
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=5000, debug=False)

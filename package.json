@@ -1,14 +1,53 @@
 {
-  "name": "punjabi-transliterator",
+  "name": "Boliyan",
   "version": "1.0.0",
-  "description": "Desktop app for Punjabi transliteration",
+  "description": "Desktop app for transliteration currently only from English to Punjabi ",
   "main": "main.js",
   "author": "Harshit Singla",
   "license": "MIT",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start-with-build": "npm run build && electron .",
+    "build-electron": "npm run build && electron-builder",
+    "dist": "npm run build && electron-builder --win --publish=never"
   },
   "devDependencies": {
-    "electron": "^37.2.0"
+    "electron": "^37.2.0",
+    "electron-builder": "^25.1.0"
+  },
+  "build": {
+    "appId": "com.boliyan.app",
+    "productName": "Boliyan",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "files": [
+      "main.js",
+      "frontend/dist/**/*",
+      "backend/**/*",
+      "!backend/venv/**/*",
+      "!backend/__pycache__/**/*",
+      "!backend/*.pyc"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/checkpoints",
+        "to": "backend/checkpoints"
+      },
+      {
+        "from": "backend/models",
+        "to": "backend/models"
+      },
+      {
+        "from": "backend/utils",
+        "to": "backend/utils"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build-assets/icon.png"
+    }
   }
 }
