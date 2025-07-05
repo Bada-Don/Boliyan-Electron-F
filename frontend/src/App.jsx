@@ -18,7 +18,7 @@ const TransliterationApp = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [expandedFeedback, setExpandedFeedback] = useState(null);
-  const [feedbackForm, setFeedbackForm] = useState({ english: '', corrected: '' });
+  const [feedbackForm, setFeedbackForm] = useState({ key: '', value: '' });
   const [currentPage, setCurrentPage] = useState('home'); // home, about, contact
   const chatContainerRef = useRef(null);
   const textareaRef = useRef(null);
@@ -84,7 +84,11 @@ const TransliterationApp = () => {
     setExpandedFeedback(expandedFeedback === messageId ? null : messageId);
   };
 
-  
+  const submitCorrection = async (messageId, correctionData) => {
+    // This function is called by the FeedbackForm component
+    // The actual submission is handled within the FeedbackForm component itself
+    console.log('Correction submitted for message:', messageId, correctionData);
+  };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
