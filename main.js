@@ -28,8 +28,7 @@ function createPythonProcess() {
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -64,7 +63,7 @@ function createWindow() {
     }
     
     // Open the DevTools automatically in development
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
   }
 }
 

@@ -9,6 +9,7 @@ import InputSection from './components/InputSection';
 import BackgroundParticles from './components/BackgroundParticles';
 import About from './components/About';
 import Contact from './components/Contact';
+import LoadingScreen from './components/LoadingScreen';
 import './App.css';
 
 const TransliterationApp = () => {
@@ -20,6 +21,7 @@ const TransliterationApp = () => {
   const [expandedFeedback, setExpandedFeedback] = useState(null);
   const [feedbackForm, setFeedbackForm] = useState({ key: '', value: '' });
   const [currentPage, setCurrentPage] = useState('home'); // home, about, contact
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
   const chatContainerRef = useRef(null);
   const textareaRef = useRef(null);
 
@@ -97,6 +99,10 @@ const TransliterationApp = () => {
     }
   };
 
+  const handleLoadingComplete = () => {
+    setShowLoadingScreen(false);
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'about':
@@ -140,24 +146,30 @@ const TransliterationApp = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-all duration-300 ${
-      isDarkMode 
-        ? 'bg-[#181818]' 
-        : 'bg-[#e4e4e4]'
-    }`}>
-      <BackgroundParticles isDarkMode={isDarkMode} />
+    <>
+      {showLoadingScreen && (
+        <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+      )}
+      
+      <div className={`min-h-screen transition-all duration-300 ${
+        isDarkMode 
+          ? 'bg-black/90' 
+          : 'bg-white/60'
+      }`}>
+        <BackgroundParticles isDarkMode={isDarkMode} />
 
-      <div className="relative z-10 flex flex-col h-screen">
-        <Header 
-          isDarkMode={isDarkMode} 
-          setIsDarkMode={setIsDarkMode}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <div className="relative z-10 flex flex-col h-screen">
+          <Header 
+            isDarkMode={isDarkMode} 
+            setIsDarkMode={setIsDarkMode}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
 
-        {renderPage()}
+          {renderPage()}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
